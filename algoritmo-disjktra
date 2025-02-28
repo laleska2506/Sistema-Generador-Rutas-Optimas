@@ -1,0 +1,26 @@
+if (IsInList(closedList, cell.Value) == -1)
+{
+    float G = CurrentNode.GCost + NodeTraversalCost(
+      CurrentNode.Location.Value, cell.Value);
+    float H = 0.0f;
+
+    int idOList = IsInList(openList, cell.Value);
+
+    if (idOList == -1)
+    {
+        PathFinderNode<T> n = new PathFinderNode<T>(cell, CurrentNode, G, H);
+        openList.Add(n);
+        onAddToOpenList?.Invoke(n);
+    }
+    else
+    {
+        float oldG = openList[idOList].GCost;
+        if (G < oldG)
+        {
+            openList[idOList].Parent = CurrentNode;
+            openList[idOList].SetGCost(G);
+            onAddToOpenList?.Invoke(openList[idOList]);
+        }
+    }
+}
+
